@@ -40,6 +40,9 @@ import FuelTank from './components/FuelTank';
 //        server.js at bottom for environment should be app.use and app.get instead of appluse and applget?
 //          
 
+// set background color below navbar
+//@ts-ignore
+document.body.style = 'background: black;';
 
 const parsePX = (pxString) => Number(pxString.slice(pxString, -2, 2)); // parse out "px" return integer
 const parseS = (sString) => Number(sString.slice(sString, -1, 1));     // parse out "s" return integer
@@ -298,9 +301,30 @@ class App extends React.Component {
   }
 
 
-  handleChangeColor = () => this.setState({ backgroundColor: "blue" });
+  /**
+   * handle the Changecolor event from Navbar
+   * @function handleChangeColor
+   */
+  handleChangeColor = () => {
+    console.log("changeColor");
+    var randomRed = Math.floor(Math.random() * 255);
+    var randomGreen = Math.floor(Math.random() * 255);
+    var randomBlue = Math.floor(Math.random() * 255);
+    console.log(randomGreen);
+    //@ts-ignore
+    this.setState({ backgroundColor: `rgb(${randomRed}, ${randomGreen}, ${randomBlue})` });
+  }
   handleGrow = () => this.setState({ grow: "true" }, () => this.changeSize());
   handleShrink = () => this.setState({ grow: "false" }, () => this.changeSize());
+  /**
+ * handle the Tutorial button event, play the tutorial for this app
+ * @function handleTutorial
+ */
+  handleTutorial = () => {
+    console.log("handleTutorial");
+    window.location.href = "https://drive.google.com/file/d/1Vs6C1D5x1UoC_ONTekmDN3j9wV3LmicJ/view";
+  }
+
 
   // grow or shrink the Box with + or - factor value
   changeSize = () => {
@@ -349,6 +373,7 @@ class App extends React.Component {
           onLogout={this.handleLogout}
           onLeaderBoard={this.handleToggleLeaderBoardModal}
           onEndGame={this.handleEndGame}
+          onTutorial={this.handleTutorial}
           onToggle={this.handleToggleNavbar}
           onGrow={this.handleGrow}
           onShrink={this.handleShrink}

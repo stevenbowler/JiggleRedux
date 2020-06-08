@@ -40,33 +40,36 @@ class AppNavbar extends Component {
     grow = () => this.props.onGrow();
     shrink = () => this.props.onShrink();
     changeColor = () => this.props.onChangeColor();
+    tutorial = () => this.props.onTutorial();
+
 
     render() {
         return (
             <div>
                 <Navbar color="dark" expand="sm" className="mb-5">
-                    <Container>
-                        <NavbarBrand href="/">JiggleReact</NavbarBrand>
-                        <NavbarText className="text-warning" placeholder="test">{this.props.name}</ NavbarText>
-                        <NavbarToggler color="dark" border="dark" onClick={this.toggle}><img src='hamburger.jpg' alt='Menu' style={{
-                            height: "40px",
-                            width: "40px"
-                        }}></img></NavbarToggler>
-                        <Collapse isOpen={this.props.isOpen} navbar>
-                            <Nav className="ml-auto" navbar>
-                                <Button hidden={this.props.loggedIn ? true : false} float="left" display="inline" onClick={this.register}>Register</Button>
-                                <Button hidden={this.props.loggedIn ? true : false} float="left" display="inline" onClick={this.login}>Login</Button>
-                                <Button hidden={this.props.loggedIn ? false : true} float="left" display="inline" onClick={this.logout}>Logout</Button>
-                                <Button hidden={this.props.loggedIn ? false : true} float="left" display="inline" onClick={this.leaderBoard}>Leader Board</Button>
-                                <Button float="left" display="inline" onClick={this.grow}>Grow</Button>
-                                <Button float="left" display="inline" onClick={this.shrink}>Shrink</Button>
-                                <Button float="left" type="color" display="inline" onClick={this.changeColor}>Color</Button>
-                                <NavItem>
-                                    <NavLink display="inline" color="white" href="https://github.com/stevenbowler">GitHub</NavLink>
-                                </NavItem>
-                            </Nav>
-                        </Collapse>
-                    </Container>
+                    {/* <Container> */}
+                    <NavbarBrand href="/">JiggleReact</NavbarBrand>
+                    <NavbarText className="text-warning" placeholder="test">{this.props.name}</ NavbarText>
+                    <NavbarToggler color="dark" border="dark" onClick={this.toggle}><img src='hamburger.jpg' alt='Menu' style={{
+                        height: "40px",
+                        width: "40px"
+                    }}></img></NavbarToggler>
+                    <Collapse isOpen={this.props.isOpen} navbar>
+                        <Nav className="ml-auto" navbar>
+                            <Button hidden={this.props.loggedIn ? true : false} float="left" display="inline" onClick={this.register}>Register</Button>
+                            <Button hidden={this.props.loggedIn ? true : false} float="left" display="inline" onClick={this.login}>Login</Button>
+                            <Button hidden={this.props.loggedIn ? true : false} float="left" display="inline" onClick={this.tutorial}>Tutorial</Button>
+                            <Button hidden={this.props.loggedIn ? false : true} float="left" display="inline" onClick={this.logout}>Logout</Button>
+                            <Button hidden={this.props.loggedIn ? false : true} float="left" display="inline" onClick={this.leaderBoard}>Leader Board</Button>
+                            <Button float="left" display="inline" onClick={this.grow}>Grow</Button>
+                            <Button float="left" display="inline" onClick={this.shrink}>Shrink</Button>
+                            <Button float="left" type="color" display="inline" onClick={this.changeColor}>Color</Button>
+                            <NavItem>
+                                <NavLink display="inline" color="white" href="https://github.com/stevenbowler/JiggleReact">GitHub</NavLink>
+                            </NavItem>
+                        </Nav>
+                    </Collapse>
+                    {/* </Container> */}
 
                 </Navbar>
 
