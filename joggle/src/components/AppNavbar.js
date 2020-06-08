@@ -46,7 +46,7 @@ class AppNavbar extends Component {
             <div>
                 <Navbar color="dark" expand="sm" className="mb-5">
                     <Container>
-                        <NavbarBrand href="/">JoggleReact</NavbarBrand>
+                        <NavbarBrand href="/">JiggleReact</NavbarBrand>
                         <NavbarText className="text-warning" placeholder="test">{this.props.name}</ NavbarText>
                         <NavbarToggler color="dark" border="dark" onClick={this.toggle}><img src='hamburger.jpg' alt='Menu' style={{
                             height: "40px",
