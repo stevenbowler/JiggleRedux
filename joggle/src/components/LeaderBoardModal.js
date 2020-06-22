@@ -58,13 +58,10 @@ class LeaderBoardModal extends Component {
         }
     }
 
-    getUserPersonalBest = function () {
+
+    getUserPersonalBest = () => {
         var temp = "";
         const loggedIn = this.props.loggedIn;
-        const setLeaderBoardUserBest = () => {
-            this.userBestScore = temp.data[0].score;
-            this.userBestLevel = temp.data[0].level;
-        }
         const logout = () => this.logout();
         var path = '/api/games/best?email=' + this.props.email;
         //console.log("path:  ", path);
@@ -73,34 +70,24 @@ class LeaderBoardModal extends Component {
                 path,
                 {
                     headers: { 'auth-token': this.props.token },
-
+                    // headers: { 'auth-token': localStorage.getItem("token") },
                 })
-            .then(function (response) {
-                //console.log("getUserPersonalBest axios post:  " + response);
+            .then(response => {
                 temp = response;
-                //console.log("this.userName axios loaded OK: " + temp.data[0].score);
-                setLeaderBoardUserBest();
-
-
-                //console.log("this.userName axios loaded OK: " + temp2);
-
-
+                // if (temp !== undefined) this.userBestScore = 0;
+                if (response.data.length == 0) this.userBestScore = 0;
+                else {
+                    this.userBestScore = response.data[0].score;
+                    this.userBestLevel = response.data[0].level;
+                }
+                console.log("leaderboard personal bestScore response: ", this.userBestScore);
+                console.log("leaderboard personal best response: ", response);
             })
-            .catch(function (error) {
+            .catch(error => {
                 console.log("Steve Output, could not getUserStats from LeaderBoardModal.js: " + error.message);
                 if (loggedIn) logout();
-                //cleanUp();
-                // this.userBestScore = 0;
-                // this.userBestLevel = 0;
 
-            })
-            // .finally(function () {
-            // }
-
-            // )
-            ;
-        // console.log("holder: " + holder);
-        // return holder;
+            });
     }
 
     getLeadersData = () => {
@@ -132,7 +119,7 @@ class LeaderBoardModal extends Component {
                 '/api/games/leaders',
                 {
                     headers: { "auth-token": this.props.token },
-
+                    // headers: { 'auth-token': localStorage.getItem("token") },
                 })
             .then(function (response) {
                 //console.log(response);
@@ -150,10 +137,8 @@ class LeaderBoardModal extends Component {
 
 
     postThisScore = () => {
-        //console.log("LeaderBoardModal.js postThisScore this.props.token: " + this.props.token + " data email: " + this.props.email);
         const loggedIn = this.props.loggedIn;
         const logout = () => {
-            //console.log("should log you out now");
             this.logout();
         }
         axios({
@@ -169,26 +154,20 @@ class LeaderBoardModal extends Component {
         })
             .then(function (response) {
                 console.log("api/games/postscore response:  " + response);
-
             })
             .catch(function (error) {
-                // console.log("leaderBoardModal postThisScore, could not post score from App.js: " + error.message);
-                // console.log("leaderBoardModal postThisScore, could not post error.status: " + error.status);
-                // console.log("should log out now");
                 if (loggedIn) logout();
-
             });
-
     }
-
-
 
 
     cancel = () => {
         this.props.onCancel();
     }
 
+
     logout = () => this.props.onLogout();
+
 
     render() {
         return (

@@ -65,11 +65,6 @@ class App extends React.Component {
     this.levelTimer = 0;
     this.fuelThiefTransition = originalFuelThiefTransition;
     this.levelTransitionFactor = (parseS(this.fuelThiefTransition) - 3) / maxLevel;
-    this.loggedIn = false;
-    this.token = "";
-    this.name = "";
-    this.email = "";
-    this.password = "";
     this.timerOn = false;
     this.gamesData = {
       userBestScore: 0,
@@ -90,20 +85,40 @@ class App extends React.Component {
       isOpenLoginModal: false,
       isOpenRegisterModal: false,
       isOpenLeaderBoardModal: false,
-      name: "Guest...Log In",
-      gameOn: false,
-      loggedIn: false,
+      // name: "Guest...Log In",
+      // gameOn: false,
+      // loggedIn: false,
       finalScore: 0,
       finalLevel: 0
-
     };
+
   }
 
 
   // LIFECYCLE METHODS and related support functions
 
   componentDidMount() {
+    if (!localStorage["name"]) {
+      // this.props.dispatch(resetUser());    // on load, reset all user settings, only when not already set
+      this.setState({
+        name: "Guest...Login",
+        token: "",
+        email: "",
+        loggedIn: false
+      });
+    } else {
+      console.log("sessionStorage.name already exists");
+      this.setState({
+        name: localStorage.getItem("name"),
+        token: localStorage.getItem("token"),
+        email: localStorage.getItem("email"),
+        loggedIn: localStorage.getItem("loggedIn")
+      });
+      if (localStorage.getItem("name") === "Guest...Login") this.setState({ loggedIn: false });
+    }
   }
+  // }
+
 
   componentDidUpdate() {
     if (!this.state.gameOn && this.timerOn) {
@@ -226,66 +241,53 @@ class App extends React.Component {
 
 
   handleLogin = (data) => {
-    var tokenHandleLogin = "";
-    var nameHandleLogin = "";
-    var loginError = "";
-    var errorResponse = "";
-    const finishLogin = () => {
-      if (loginError) {
-        this.setState({ name: "wrong email or pswd" }); // will display error message on Navbar
-        console.log(this.name);
-        this.handleToggleLoginModal();
-        return;
-      }
-      this.token = tokenHandleLogin;
-      console.log("handleLogin this.token = tokenHandleLogin" + this.token);
-      this.email = data.email;
-      this.password = data.password;
-      this.setState({ name: nameHandleLogin }); // will display name on Navbar
-      this.handleToggleLoginModal();
-      this.setState({ loggedIn: true });
-      //console.log(" token .finally outside of Axios: " + tokenHandleLogin + " this.token: " + this.token);
-    }
-    const loginObject = axios
+
+    axios
       .post(
         '/api/users/login',
         {
           email: data.email,
           password: data.password
         })
-      .then(function (response) {
-        tokenHandleLogin = response.data.token;
-        nameHandleLogin = response.data.user.name;
-        console.log("app.js handleLogin tokenHandleLogin: " + tokenHandleLogin);
+      .then(response => {
+        this.setState({ name: response.data.user.name }); // will display name on Navbar
+        this.setState({ token: response.data.token });
+        this.setState({ email: response.data.user.email });
+        this.setState({ loggedIn: true });
+        localStorage.setItem("name", this.state.name);
+        localStorage.setItem("token", this.state.token);
+        localStorage.setItem("email", this.state.email);
+        localStorage.setItem("loggedIn", "true");
+        this.handleToggleLoginModal();
       })
-      .catch(function (error) {
-        //console.log("Steve Output, could not login from App.js: " + error);
-        loginError = error;
-        errorResponse = error.response;
-        console.log("Steve Output, could not login from App.js: " + loginError);
-        console.log("handleLogin catch errorResponse :" + errorResponse);
+      .catch(error => {
+        console.log("handleLogin catch errorResponse :" + error);
+        this.setState({ name: "wrong email or pswd" }); // will display error message on Navbar
+        this.handleToggleLoginModal();
       })
       .finally(function () {
-        finishLogin();
+        // finishLogin();
       });
   }
 
 
   handleLogout = () => {
-    this.token = "";
-    this.email = "";
-    this.password = "";
-    this.setState({ name: "Logged out" });
+    this.setState({ name: "Guest...Login" });
+    this.setState({ email: "" });
+    this.setState({ token: "" });
     this.setState({ loggedIn: false });
     this.setState({ finalScore: 0 });
     this.setState({ finalLevel: 0 });
+    localStorage.setItem("name", "Guest...Login");
+    localStorage.setItem("token", "");
+    localStorage.setItem("email", "");
+    localStorage.setItem("loggedIn", "false");
   }
 
 
   handleEndGame = () => {
     this.setState({ finalScore: this.score + this.fuel });
     this.setState({ finalLevel: this.level });
-    console.log("just before handleGamesPostThisScore, token: " + this.token + "email: " + this.email);
     console.log("Final Score: " + this.state.finalScore + "Final Level: " + this.state.finalLevel);
     //console.log("gamesData.bestScore: " + gamesData + "  gamesData.userBestScore: " + gamesData);
     this.handleToggleLeaderBoardModal();
@@ -317,9 +319,9 @@ class App extends React.Component {
   handleGrow = () => this.setState({ grow: "true" }, () => this.changeSize());
   handleShrink = () => this.setState({ grow: "false" }, () => this.changeSize());
   /**
- * handle the Tutorial button event, play the tutorial for this app
- * @function handleTutorial
- */
+  * handle the Tutorial button event, play the tutorial for this app
+  * @function handleTutorial
+  */
   handleTutorial = () => {
     console.log("handleTutorial");
     window.location.href = "https://drive.google.com/file/d/1Vs6C1D5x1UoC_ONTekmDN3j9wV3LmicJ/view";
@@ -385,17 +387,16 @@ class App extends React.Component {
           onCancel={this.handleToggleLoginRegisterModal}
           onRegister={this.handleRegister}
           onLogin={this.handleLogin}
-          name={this.name}
-          email={this.email}
-          password={this.password}
+          name={this.state.name}
+          email={this.state.email}
         />
         <LeaderBoardModal
           loggedIn={this.state.loggedIn}
           onLogout={this.handleLogout}
           isOpenLeaderBoardModal={this.state.isOpenLeaderBoardModal}
           onCancel={this.handleToggleLeaderBoardModal}
-          token={this.token}
-          email={this.email}
+          token={this.state.token}
+          email={this.state.email}
           userName={this.state.name}
           score={this.state.finalScore}
           level={this.state.finalLevel}
