@@ -12,7 +12,7 @@ Packages used include: [@hapi/joi](https://www.npmjs.com/package/@hapi/joi), [bc
 
 First, watch the video tutorial by clicking [this link](https://drive.google.com/file/d/1Vs6C1D5x1UoC_ONTekmDN3j9wV3LmicJ/view).
 
-Then play Jiggle React by [clicking here](https://mysterious-badlands-99477.herokuapp.com/).
+Then play Jiggle React by [clicking here](https://jigglereact.herokuapp.com/).
 
 The game starts by touching a left/right/up/down button on the screen or, if on a laptop use the keys.
 
