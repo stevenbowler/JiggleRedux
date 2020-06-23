@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Input } from 'reactstrap';
+import { Button } from 'reactstrap';
 import Keybinding from 'react-keybinding-component';
 
 
-class Buttons extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+class Buttons extends Component {
+    // constructor(props) {
+    //     super(props);
+    // }
 
     modalsClosed = () => {
         return (!this.props.isOpenLeaderBoardModal && !this.props.isOpenRegisterModal && !this.props.isOpenNavBar);

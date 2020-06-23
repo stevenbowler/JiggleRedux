@@ -4,13 +4,12 @@ import {
     Form,
     FormGroup,
     Label,
-    Input,
     FormText,
     Col,
     Modal, ModalHeader, ModalBody, ModalFooter
 } from 'reactstrap';
 import axios from 'axios';
-import { cleanup } from '@testing-library/react';
+// import { cleanup } from '@testing-library/react';
 
 //const { passwordValidation, emailValidation, nameValidation } = require('../validation/validationNameEmailPassword');
 
@@ -60,7 +59,6 @@ class LeaderBoardModal extends Component {
 
 
     getUserPersonalBest = () => {
-        var temp = "";
         const loggedIn = this.props.loggedIn;
         const logout = () => this.logout();
         var path = '/api/games/best?email=' + this.props.email;
@@ -70,21 +68,16 @@ class LeaderBoardModal extends Component {
                 path,
                 {
                     headers: { 'auth-token': this.props.token },
-                    // headers: { 'auth-token': localStorage.getItem("token") },
                 })
             .then(response => {
-                temp = response;
-                // if (temp !== undefined) this.userBestScore = 0;
-                if (response.data.length == 0) this.userBestScore = 0;
+                if (response.data.length === 0) this.userBestScore = 0;
                 else {
                     this.userBestScore = response.data[0].score;
                     this.userBestLevel = response.data[0].level;
                 }
-                console.log("leaderboard personal bestScore response: ", this.userBestScore);
-                console.log("leaderboard personal best response: ", response);
             })
             .catch(error => {
-                console.log("Steve Output, could not getUserStats from LeaderBoardModal.js: " + error.message);
+                console.log("Could not getUserStats from LeaderBoardModal.js: " + error.message);
                 if (loggedIn) logout();
 
             });
@@ -119,7 +112,6 @@ class LeaderBoardModal extends Component {
                 '/api/games/leaders',
                 {
                     headers: { "auth-token": this.props.token },
-                    // headers: { 'auth-token': localStorage.getItem("token") },
                 })
             .then(function (response) {
                 //console.log(response);
@@ -127,12 +119,10 @@ class LeaderBoardModal extends Component {
                 setLeaderBoard();
             })
             .catch(function (error) {
-                //console.log("Steve Output, could not getGamesLeaders from LeaderBoardModal.js: " + error.message);
+                //console.log("Could not getGamesLeaders from LeaderBoardModal.js: " + error.message);
                 if (loggedIn) logout();
 
             });
-        // .finally(function () {
-        // });
     }
 
 

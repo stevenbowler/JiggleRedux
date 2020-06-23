@@ -8,17 +8,16 @@ import {
     Nav,
     NavItem,
     NavLink,
-    Container,
     Button
 } from 'reactstrap';
 
 
 
 class AppNavbar extends Component {
-    constructor(props) {
-        super(props);
+    // constructor(props) {
+    //     super(props);
 
-    }
+    // }
 
     toggleModal = () => this.modal = !this.modal;
 

@@ -85,9 +85,7 @@ class App extends React.Component {
       isOpenLoginModal: false,
       isOpenRegisterModal: false,
       isOpenLeaderBoardModal: false,
-      // name: "Guest...Log In",
-      // gameOn: false,
-      // loggedIn: false,
+      gameOn: false,
       finalScore: 0,
       finalLevel: 0
     };
@@ -141,11 +139,11 @@ class App extends React.Component {
 
   // called from lifecycle methods
   gameUpdate = () => {
-    console.log("gameUpdate gameOn: " + this.state.gameOn);
+    // console.log("gameUpdate gameOn: " + this.state.gameOn);
     if (this.state.gameOn) {
-      console.log("levelTimer before: " + this.levelTimer);
+      // console.log("levelTimer before: " + this.levelTimer);
       ++this.levelTimer;
-      console.log("levelTimer after: " + this.levelTimer);
+      // console.log("levelTimer after: " + this.levelTimer);
       if (this.levelTimer >= maxLevelTimer) this.newLevel();
       if (this.level > maxLevel) this.handleEndGame();
       this.score = this.score + this.level;
@@ -215,7 +213,7 @@ class App extends React.Component {
 
   // called from LoginRegisterModals component to handle registration request attribute changes
   handleRegister = (data) => {
-    console.log("App.js handleRegister input name: " + data.name + "email: " + data.email + "password: " + data.password);
+    // console.log("App.js handleRegister input name: " + data.name + "email: " + data.email + "password: " + data.password);
     axios
       .post(
         '/api/users/register',
@@ -224,18 +222,39 @@ class App extends React.Component {
           email: data.email,
           password: data.password
         })
-      .then(function (response) {
-        console.log(response);
-        //this.handleLogin(loginData);    // should be able to log automatically in once registered OK
+      // .then(response => {
+      //   // console.log("register login response: ", response);
+      // })
+      .then((response) => {
+        console.log("register login response: ", response);
+        // console.log("App.js register login preAxios call, email: ", data.email);
+        axios
+          .post(
+            '/api/users/login',
+            {
+              email: data.email,
+              password: data.password
+            })
+          .then(res => {
+            this.setState({ name: res.data.user.name }); // will display name on Navbar
+            this.setState({ token: res.data.token });
+            this.setState({ email: res.data.user.email });
+            this.setState({ loggedIn: true });
+            localStorage.setItem("name", this.state.name);
+            localStorage.setItem("token", this.state.token);
+            localStorage.setItem("email", this.state.email);
+            localStorage.setItem("loggedIn", "true");
+            this.handleToggleLoginModal();
+          })
+          .catch(error => {
+            console.log("handleLogin catch errorResponse :" + error);
+            this.setState({ name: "wrong email or pswd" }); // will display error message on Navbar
+            this.handleToggleLoginModal();
+          });
+
       })
-      .catch(function (error) {
+      .catch(error => {
         console.log(" Could not register from App.js: " + error.message);
-      })
-      .finally(function () {
-        // this.handleLogin({
-        //   email: data.email,
-        //   password: data.password
-        // });
       });
   }
 
@@ -264,9 +283,6 @@ class App extends React.Component {
         console.log("handleLogin catch errorResponse :" + error);
         this.setState({ name: "wrong email or pswd" }); // will display error message on Navbar
         this.handleToggleLoginModal();
-      })
-      .finally(function () {
-        // finishLogin();
       });
   }
 
