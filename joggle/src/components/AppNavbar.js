@@ -55,14 +55,14 @@ class AppNavbar extends Component {
                     }}></img></NavbarToggler>
                     <Collapse isOpen={this.props.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
-                            <Button hidden={this.props.loggedIn ? true : false} float="left" display="inline" onClick={this.register}>Register</Button>
-                            <Button hidden={this.props.loggedIn ? true : false} float="left" display="inline" onClick={this.login}>Login</Button>
-                            <Button hidden={this.props.loggedIn ? true : false} float="left" display="inline" onClick={this.tutorial}>Tutorial</Button>
-                            <Button hidden={this.props.loggedIn ? false : true} float="left" display="inline" onClick={this.logout}>Logout</Button>
-                            <Button hidden={this.props.loggedIn ? false : true} float="left" display="inline" onClick={this.leaderBoard}>Leader Board</Button>
-                            <Button float="left" display="inline" onClick={this.grow}>Grow</Button>
-                            <Button float="left" display="inline" onClick={this.shrink}>Shrink</Button>
-                            <Button float="left" type="color" display="inline" onClick={this.changeColor}>Color</Button>
+                            <Button color="dark" hidden={this.props.loggedIn ? true : false} float="left" display="inline" onClick={this.register}>Register</Button>
+                            <Button color="dark" hidden={this.props.loggedIn ? true : false} float="left" display="inline" onClick={this.login}>Login</Button>
+                            <Button color="dark" hidden={this.props.loggedIn ? true : false} float="left" display="inline" onClick={this.tutorial}>Tutorial</Button>
+                            <Button color="dark" hidden={this.props.loggedIn ? false : true} float="left" display="inline" onClick={this.logout}>Logout</Button>
+                            <Button color="dark" hidden={this.props.loggedIn ? false : true} float="left" display="inline" onClick={this.leaderBoard}>Leader Board</Button>
+                            <Button color="dark" float="left" display="inline" onClick={this.grow}>Grow</Button>
+                            <Button color="dark" float="left" display="inline" onClick={this.shrink}>Shrink</Button>
+                            <Button color="dark" float="left" type="color" display="inline" onClick={this.changeColor}>Color</Button>
                             <NavItem>
                                 <NavLink display="inline" color="white" href="https://github.com/stevenbowler/JiggleReact">GitHub</NavLink>
                             </NavItem>
